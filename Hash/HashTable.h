@@ -91,6 +91,7 @@ namespace closeHash
 			//Hash hf;// Hash()(key)
 			size_t hashi = Hash()(key) % _tables.size();
 			//size_t hashi = key % _tables.size();
+			size_t starti = hashi;// 极端场景下都不是空，所以最多走一圈
 			while (_tables[hashi]._state != EMPTY)
 			{
 				// 找到的条件：
@@ -102,8 +103,13 @@ namespace closeHash
 					return &_tables[hashi];
 				}
 
+
 				++hashi;
 				hashi %= _tables.size();
+				if (hashi == starti)
+				{
+					break;
+				}
 			}
 
 			return nullptr;
